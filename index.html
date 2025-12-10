@@ -33,14 +33,34 @@
       margin: 0 20px;
     }
 
-    /* Styles pour les confettis */
-    .confetti {
+    /* Styles pour les cœurs */
+    .heart {
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 20px;
+      height: 20px;
       background-color: red;
-      opacity: 0.7;
+      transform: rotate(-45deg);
       animation: fall 3s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 10px;
+      top: 0;
     }
 
     @keyframes fall {
@@ -61,18 +81,19 @@
     de rires et de moments inoubliables.
   </p>
 
-  <!-- Confettis générés par JS -->
+  <!-- Cœurs animés -->
   <script>
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-    for(let i = 0; i < 100; i++) {
-      const confetti = document.createElement('div');
-      confetti.classList.add('confetti');
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.left = Math.random() * window.innerWidth + 'px';
-      confetti.style.animationDuration = (2 + Math.random() * 3) + 's';
-      confetti.style.width = confetti.style.height = (5 + Math.random() * 10) + 'px';
-      document.body.appendChild(confetti);
+    const colors = ['#ff0000', '#ff69b4', '#ff1493', '#ff4500', '#ff6347'];
+    for(let i = 0; i < 50; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+      heart.style.width = heart.style.height = (10 + Math.random() * 20) + 'px';
+      document.body.appendChild(heart);
     }
   </script>
+
 </body>
 </html>

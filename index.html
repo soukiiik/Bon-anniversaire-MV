@@ -3,20 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday mv </title>
+  <title>Happy Birthday mv</title>
 
-  <!-- Icône pour l’écran d’accueil iPhone -->
   <link rel="apple-touch-icon" href="icon.png">
-
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ffe6f0">
-
-  <!-- Pour ouvrir en plein écran sur iPhone -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-  <!-- Anti-cache -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -36,12 +30,28 @@
       overflow: hidden;
     }
 
+    /* Message d'introduction */
+    #intro {
+      font-size: 32px;
+      font-weight: bold;
+      color: #b30059;
+      cursor: pointer;
+      animation: blink 1.5s infinite;
+      z-index: 15;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.55; }
+      100% { opacity: 1; }
+    }
+
     /* Logo */
     img {
       width: 150px;
       height: auto;
       margin-bottom: 20px;
-      display: none; /* masqué au début */
+      display: none;
     }
 
     /* Poème */
@@ -66,6 +76,8 @@
       cursor: pointer;
       animation: pulse 1.5s infinite;
       position: relative;
+      z-index: 10;
+      display: none;
     }
 
     #coeurCadeau::before,
@@ -92,6 +104,18 @@
       0% { transform: rotate(-45deg) scale(1); }
       50% { transform: rotate(-45deg) scale(1.1); }
       100% { transform: rotate(-45deg) scale(1); }
+    }
+
+    /* Canvas explosion */
+    #explosionCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      display: none;
+      z-index: 20;
     }
 
     /* Cœurs animés */
@@ -132,19 +156,25 @@
 </head>
 <body>
 
-  <!-- Gros cœur cadeau -->
+  <!-- Message d'introduction -->
+  <div id="intro">Coucou toi ! Clique ici ! ❤️</div>
+
+  <!-- Cœur cadeau -->
   <div id="coeurCadeau"></div>
+
+  <!-- Canvas explosion -->
+  <canvas id="explosionCanvas"></canvas>
 
   <!-- Logo -->
   <img id="logo" src="logo.png" alt="Logo">
 
-  <!-- Texte -->
+  <!-- Poème -->
   <p id="poeme">
-    un petit truc simple pour te souhaiter un bon anniversaire avec tout ce qui va avec.<br>
+    Un petit truc simple pour te souhaiter un bon anniversaire avec tout ce qui va avec.<br>
     Cette page s'actualisera, parfois, garde-la près de toi.
   </p>
 
-  <!-- Script pour cœurs animés -->
+  <!-- Coeurs qui tombent -->
   <script>
     const colors = ['#ff0000', '#ff69b4', '#ff1493', '#ff4500', '#ff6347'];
     for(let i = 0; i < 50; i++) {
@@ -160,25 +190,90 @@
     }
   </script>
 
-  <!-- Script pour révéler le cadeau -->
+  <!-- Explosion + logique -->
   <script>
+    const intro = document.getElementById("intro");
     const coeur = document.getElementById("coeurCadeau");
     const poeme = document.getElementById("poeme");
     const logo = document.getElementById("logo");
+    const canvas = document.getElementById("explosionCanvas");
+    const ctx = canvas.getContext("2d");
 
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    /* 1) Clic sur "Coucou toi !" → affiche le cœur */
+    intro.addEventListener("click", () => {
+      intro.style.display = "none";
+      coeur.style.display = "block";
+    });
+
+    /* 2) Clic sur cœur → explosion + poème */
     coeur.addEventListener("click", () => {
-      coeur.style.display = "none";   // cache le cœur
-      logo.style.display = "block";   // affiche le logo
-      poeme.style.display = "block";  // affiche le poème
+      coeur.style.display = "none";
+
+      canvas.style.display = "block";
+      explosion();
 
       setTimeout(() => {
-        poeme.style.opacity = 1;
-        poeme.style.transform = "scale(1)";
-      }, 50);
+        canvas.style.display = "none";
+        logo.style.display = "block";
+        poeme.style.display = "block";
+
+        setTimeout(() => {
+          poeme.style.opacity = 1;
+          poeme.style.transform = "scale(1)";
+        }, 50);
+      }, 1200);
     });
+
+    /* Explosion */
+    function explosion() {
+      const particles = [];
+      const particleCount = 150;
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          size: Math.random() * 6 + 4,
+          color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+          speedX: (Math.random() - 0.5) * 10,
+          speedY: (Math.random() - 0.5) * 10,
+          life: 100
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+
+        particles.forEach(p => {
+          if (p.life > 0) {
+            alive = true;
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.size *= 0.96;
+            p.life--;
+
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+
+        if (alive) requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
   </script>
 
-  <!-- Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');

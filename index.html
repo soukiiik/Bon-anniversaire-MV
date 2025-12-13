@@ -30,6 +30,7 @@
       overflow: hidden;
     }
 
+    /* Message d'intro */
     #intro {
       font-size: 32px;
       font-weight: bold;
@@ -45,6 +46,7 @@
       100% { opacity: 1; }
     }
 
+    /* Logo */
     img {
       width: 150px;
       height: auto;
@@ -52,6 +54,7 @@
       display: none;
     }
 
+    /* Poème */
     #poeme {
       font-size: 28px;
       line-height: 1.5;
@@ -64,9 +67,10 @@
       display: none;
     }
 
+    /* Gros cœur cadeau */
     #coeurCadeau {
-      width: 130px;
-      height: 130px;
+      width: 60px; /* commence petit */
+      height: 60px;
       background-color: red;
       transform: rotate(-45deg);
       cursor: pointer;
@@ -81,20 +85,20 @@
     #coeurCadeau::after {
       content: "";
       position: absolute;
-      width: 130px;
-      height: 130px;
+      width: 60px;
+      height: 60px;
       background-color: red;
       border-radius: 50%;
-      transition: width 0.3s, height 0.3s;
+      transition: width 0.3s, height 0.3s, top 0.3s, left 0.3s;
     }
 
     #coeurCadeau::before {
-      top: -65px;
+      top: -30px;
       left: 0;
     }
 
     #coeurCadeau::after {
-      left: 65px;
+      left: 30px;
       top: 0;
     }
 
@@ -104,6 +108,7 @@
       100% { transform: rotate(-45deg) scale(1); }
     }
 
+    /* Canvas explosion */
     #explosionCanvas {
       position: fixed;
       top: 0;
@@ -114,16 +119,51 @@
       display: none;
       z-index: 20;
     }
+
+    /* Cœurs animés */
+    .heart {
+      position: absolute;
+      background-color: red;
+      transform: rotate(-45deg);
+      animation: fall 3s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background-color: inherit;
+    }
+
+    .heart::before {
+      width: 100%;
+      height: 100%;
+      top: -50%;
+      left: 0;
+    }
+
+    .heart::after {
+      width: 100%;
+      height: 100%;
+      left: 50%;
+      top: 0;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10px) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
   </style>
 </head>
 <body>
 
-  <div id="intro"> To the girl I love most 🤍 </div>
+  <div id="intro">Coucou toi ! Clique ici ! ❤️</div>
   <div id="coeurCadeau"></div>
   <canvas id="explosionCanvas"></canvas>
   <img id="logo" src="logo.png" alt="Logo">
   <p id="poeme">
-    Bon Anniversaire la meuf la plus incroyable ! <br>
+    Un petit truc simple pour te souhaiter un bon anniversaire avec tout ce qui va avec.<br>
     Cette page s'actualisera, parfois, garde-la près de toi.
   </p>
 
@@ -135,8 +175,8 @@
     const canvas = document.getElementById("explosionCanvas");
     const ctx = canvas.getContext("2d");
 
-    let clickCount = 0; // Compteur de clics
-    let coeurSize = 130;
+    let clickCount = 0; 
+    let coeurSize = 60; // commence petit
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -145,23 +185,38 @@
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // 1) Clic sur le texte d’intro → afficher le cœur
+    // Création des cœurs animés (sans confettis)
+    const colors = ['#ff0000', '#ff69b4', '#ff1493', '#ff4500', '#ff6347'];
+    for(let i = 0; i < 30; i++) {
+      const heart = document.createElement('div');
+      const size = 10 + Math.random() * 20;
+      heart.classList.add('heart');
+      heart.style.width = size + 'px';
+      heart.style.height = size + 'px';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+      document.body.appendChild(heart);
+    }
+
+    // Clic sur intro → affiche le cœur
     intro.addEventListener("click", () => {
       intro.style.display = "none";
       coeur.style.display = "block";
     });
 
-    // 2) Clic sur le cœur → grossit / explosion au 3e clic
+    // Clic sur cœur → grossit et explose au 3e clic
     coeur.addEventListener("click", () => {
       clickCount++;
       if (clickCount < 3) {
         coeurSize += 30; // grossit à chaque clic
         coeur.style.width = coeurSize + "px";
         coeur.style.height = coeurSize + "px";
-        coeur.style.transition = "width 0.3s, height 0.3s";
-        // Mettre à jour les pseudo-éléments ::before et ::after
-        coeur.style.setProperty("--coeurSize", coeurSize + "px");
-        coeur.querySelectorAll('::before, ::after');
+        coeur.style.setProperty('--before-after-size', coeurSize + 'px');
+        coeur.querySelectorAll('::before, ::after'); // pour transition des pseudo-éléments
+        // Ajuste ::before et ::after dynamiquement
+        coeur.style.setProperty('--coeurOffset', (coeurSize / 2) + 'px');
+        coeur.style.setProperty('--coeurOffsetTop', (-coeurSize / 2) + 'px');
       } else {
         // Explosion
         coeur.style.display = "none";
@@ -179,7 +234,6 @@
       }
     });
 
-    // Explosion simple
     function explosion() {
       const particles = [];
       const particleCount = 150;
@@ -215,6 +269,7 @@
       }
       animate();
     }
+
   </script>
 
   <script>

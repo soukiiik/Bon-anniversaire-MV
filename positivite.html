@@ -18,11 +18,11 @@
     h1 {
       color: #b30059;
       font-size: 32px;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     h2 {
-      font-size: 20px;
+      font-size: 18px;
       color: #4d0033;
       margin-bottom: 25px;
     }
@@ -31,7 +31,7 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 12px;
-      max-width: 500px;
+      max-width: 520px;
       margin: 0 auto 30px;
     }
 
@@ -42,11 +42,21 @@
       font-size: 18px;
       cursor: pointer;
       box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
+      transition: transform 0.2s, opacity 0.2s;
     }
 
     .day:hover {
       transform: scale(1.05);
+    }
+
+    .locked {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .read {
+      background: #ffe6f0;
+      font-weight: bold;
     }
 
     #phraseBox {
@@ -59,6 +69,18 @@
       font-size: 22px;
       color: #4d0033;
       box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      animation: appear 0.8s ease;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     a {
@@ -76,41 +98,9 @@
 <body>
 
   <h1>31 jours pour toi 🤍</h1>
-  <h2>Un jour. Une phrase. Rien de plus.</h2>
+  <h2>Un jour à la fois. Rien de plus.</h2>
 
-  <div class="days">
-    <div class="day" onclick="showPhrase(0)">Jour 1</div>
-    <div class="day" onclick="showPhrase(1)">Jour 2</div>
-    <div class="day" onclick="showPhrase(2)">Jour 3</div>
-    <div class="day" onclick="showPhrase(3)">Jour 4</div>
-    <div class="day" onclick="showPhrase(4)">Jour 5</div>
-    <div class="day" onclick="showPhrase(5)">Jour 6</div>
-    <div class="day" onclick="showPhrase(6)">Jour 7</div>
-    <div class="day" onclick="showPhrase(7)">Jour 8</div>
-    <div class="day" onclick="showPhrase(8)">Jour 9</div>
-    <div class="day" onclick="showPhrase(9)">Jour 10</div>
-    <div class="day" onclick="showPhrase(10)">Jour 11</div>
-    <div class="day" onclick="showPhrase(11)">Jour 12</div>
-    <div class="day" onclick="showPhrase(12)">Jour 13</div>
-    <div class="day" onclick="showPhrase(13)">Jour 14</div>
-    <div class="day" onclick="showPhrase(14)">Jour 15</div>
-    <div class="day" onclick="showPhrase(15)">Jour 16</div>
-    <div class="day" onclick="showPhrase(16)">Jour 17</div>
-    <div class="day" onclick="showPhrase(17)">Jour 18</div>
-    <div class="day" onclick="showPhrase(18)">Jour 19</div>
-    <div class="day" onclick="showPhrase(19)">Jour 20</div>
-    <div class="day" onclick="showPhrase(20)">Jour 21</div>
-    <div class="day" onclick="showPhrase(21)">Jour 22</div>
-    <div class="day" onclick="showPhrase(22)">Jour 23</div>
-    <div class="day" onclick="showPhrase(23)">Jour 24</div>
-    <div class="day" onclick="showPhrase(24)">Jour 25</div>
-    <div class="day" onclick="showPhrase(25)">Jour 26</div>
-    <div class="day" onclick="showPhrase(26)">Jour 27</div>
-    <div class="day" onclick="showPhrase(27)">Jour 28</div>
-    <div class="day" onclick="showPhrase(28)">Jour 29</div>
-    <div class="day" onclick="showPhrase(29)">Jour 30</div>
-    <div class="day" onclick="showPhrase(30)">Jour 31</div>
-  </div>
+  <div class="days" id="days"></div>
 
   <div id="phraseBox"></div>
 
@@ -151,11 +141,40 @@
       "Et je serai toujours là pour te le rappeler 🤍"
     ];
 
-    function showPhrase(index) {
-      const box = document.getElementById("phraseBox");
-      box.innerText = phrases[index];
-      box.style.display = "block";
-      box.scrollIntoView({ behavior: "smooth" });
+    const today = new Date().getDate();
+    const readDays = JSON.parse(localStorage.getItem("joursLus")) || [];
+    const daysContainer = document.getElementById("days");
+    const box = document.getElementById("phraseBox");
+
+    for (let i = 1; i <= 31; i++) {
+      const div = document.createElement("div");
+      div.className = "day";
+      div.innerText = "Jour " + i;
+
+      if (i > today) {
+        div.classList.add("locked");
+      }
+
+      if (readDays.includes(i)) {
+        div.classList.add("read");
+      }
+
+      div.onclick = () => {
+        if (i > today) return;
+
+        box.innerText = phrases[i - 1];
+        box.style.display = "block";
+
+        if (!readDays.includes(i)) {
+          readDays.push(i);
+          localStorage.setItem("joursLus", JSON.stringify(readDays));
+          div.classList.add("read");
+        }
+
+        box.scrollIntoView({ behavior: "smooth" });
+      };
+
+      daysContainer.appendChild(div);
     }
   </script>
 

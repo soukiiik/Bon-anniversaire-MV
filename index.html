@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<!-- Nom qui apparaît sur l’écran d’accueil iPhone -->
-<meta name="apple-mobile-web-app-title" content="Le Coeur">
-<meta name="application-name" content="Le Coeur">
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To the girl I love most in all world 🤍</title>
+  <title>To the girl I love 🤍</title>
+
+  <!-- Nom sur écran d’accueil iPhone -->
+  <meta name="apple-mobile-web-app-title" content="Le Coeur">
+  <meta name="application-name" content="Le Coeur">
+
+  <!-- Icône pour l’écran d’accueil iPhone -->
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="theme-color" content="#ffe6f0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <style>
     body {
@@ -26,6 +36,7 @@
       font-size: 32px;
       color: #b30059;
       cursor: pointer;
+      margin-bottom: 20px;
     }
 
     #coeur {
@@ -49,61 +60,73 @@
       border-radius: 50%;
     }
 
-    #coeur::before {
-      top: -60px;
-      left: 0;
-    }
-
-    #coeur::after {
-      left: 60px;
-      top: 0;
-    }
+    #coeur::before { top: -60px; left: 0; }
+    #coeur::after { left: 60px; top: 0; }
 
     #poeme {
       display: none;
       font-size: 24px;
       color: #4d0033;
       max-width: 600px;
+      margin-bottom: 20px;
+    }
+
+    #logo {
+      display: none;
+      width: 150px;
+      margin-bottom: 20px;
     }
 
     a {
-      margin-top: 20px;
+      margin-top: 15px;
       text-decoration: none;
       color: white;
       background: #ff4d88;
       padding: 10px 22px;
       border-radius: 30px;
-      display: inline-block;
+      display: none;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-  <div id="intro">To the girl I love most 🤍</div>
+  <!-- Texte d’intro -->
+  <div id="intro">To the girl I love the most 🤍<br><small>Clique ici !</small></div>
 
+  <!-- Cœur cliquable -->
   <div id="coeur"></div>
 
+  <!-- Logo -->
+  <img id="logo" src="logo.png" alt="Logo">
+
+  <!-- Poème -->
   <p id="poeme">
     Bon anniversaire la fille incroyable que tu es. Gros cœur avec les doigts
   </p>
 
-  <a id="suite" href="coeur.html" style="display:none;">Suite 👉</a>
-  <a href="positivite.html" style="display:none;"> + = + </a>
+  <!-- Boutons -->
+  <a id="suite" href="coeur.html">Suite 👉</a>
+  <a href="positivite.html">🌸 31 jours pour toi</a>
 
   <script>
     const intro = document.getElementById("intro");
     const coeur = document.getElementById("coeur");
+    const logo = document.getElementById("logo");
     const poeme = document.getElementById("poeme");
     const suite = document.getElementById("suite");
     const positivite = document.querySelector('a[href="positivite.html"]');
 
+    // Clique sur le texte d’intro
     intro.onclick = () => {
       intro.style.display = "none";
       coeur.style.display = "block";
     };
 
+    // Clique sur le cœur
     coeur.onclick = () => {
       coeur.style.display = "none";
+      logo.style.display = "block";
       poeme.style.display = "block";
       suite.style.display = "inline-block";
       positivite.style.display = "inline-block";

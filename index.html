@@ -10,9 +10,6 @@
   <meta name="apple-mobile-web-app-title" content="Le Coeur">
   <meta name="application-name" content="Le Coeur">
 
-  <!-- Icône iPhone -->
-  <link rel="apple-touch-icon" href="icon.png">
-
   <style>
     body {
       margin: 0;
@@ -24,59 +21,55 @@
       font-family: Georgia, serif;
       background: linear-gradient(135deg, #ffe6f0, #fff0b3);
       text-align: center;
-      padding: 20px;
+      padding: 16px;
+      box-sizing: border-box;
     }
 
     #intro {
-      font-size: 32px;
+      font-size: 30px;
       color: #b30059;
       cursor: pointer;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     #coeur {
-      width: 110px;
-      height: 110px;
+      width: 90px;
+      height: 90px;
       background: red;
       transform: rotate(-45deg);
-      margin: 20px;
+      margin: 16px;
       display: none;
       cursor: pointer;
       position: relative;
+      animation: pulse 1.3s infinite;
     }
 
     #coeur::before,
     #coeur::after {
       content: "";
       position: absolute;
-      width: 110px;
-      height: 110px;
+      width: 90px;
+      height: 90px;
       background: red;
       border-radius: 50%;
     }
 
-    #coeur::before { top: -55px; left: 0; }
-    #coeur::after { left: 55px; top: 0; }
+    #coeur::before { top: -45px; left: 0; }
+    #coeur::after { left: 45px; top: 0; }
+
+    @keyframes pulse {
+      0% { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale(1.08); }
+      100% { transform: rotate(-45deg) scale(1); }
+    }
 
     video {
       display: none;
-      max-width: 90%;
+      width: 100%;
+      max-width: 360px;
+      max-height: 40vh;
       border-radius: 15px;
-      margin-bottom: 20px;
-    }
-
-    #logo {
-      display: none;
-      width: 140px;
-      margin-bottom: 20px;
-    }
-
-    #poeme {
-      display: none;
-      font-size: 22px;
-      color: #4d0033;
-      max-width: 600px;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     a {
@@ -86,13 +79,12 @@
       background: #ff4d88;
       padding: 10px 22px;
       border-radius: 30px;
-      margin: 8px 0;
+      margin: 6px 0;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-
-  <body>
 
   <!-- INTRO -->
   <div id="intro">
@@ -104,13 +96,14 @@
   <div id="coeur"></div>
 
   <!-- VIDÉO -->
-  <video id="video" controls>
+  <video id="video" controls playsinline>
     <source src="video.mp4" type="video/mp4">
+    Ton navigateur ne supporte pas la vidéo.
   </video>
 
   <!-- BOUTONS -->
   <a id="suite" href="coeur.html">Suite 👉</a>
-  <a href="positivite.html">🌸 31 jours pour toi</a>
+  <a id="positivite" href="positivite.html">🌸 31 jours pour toi</a>
 
   <!-- SCRIPT -->
   <script>
@@ -118,7 +111,7 @@
     const coeur = document.getElementById("coeur");
     const video = document.getElementById("video");
     const suite = document.getElementById("suite");
-    const positivite = document.querySelector('a[href="positivite.html"]');
+    const positivite = document.getElementById("positivite");
 
     intro.onclick = () => {
       intro.style.display = "none";
@@ -128,13 +121,11 @@
     coeur.onclick = () => {
       coeur.style.display = "none";
 
-      if (video) {
-        video.style.display = "block";
-        video.play().catch(() => {});
-      }
+      video.style.display = "block";
+      video.play().catch(() => {});
 
-      if (suite) suite.style.display = "inline-block";
-      if (positivite) positivite.style.display = "inline-block";
+      suite.style.display = "inline-block";
+      positivite.style.display = "inline-block";
     };
   </script>
 

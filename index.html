@@ -3,21 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>To the girl I love 🤍</title>
 
-  <!-- Nom sur écran d’accueil iPhone -->
+  <!-- Nom affiché sur l’écran d’accueil iPhone -->
   <meta name="apple-mobile-web-app-title" content="Le Coeur">
   <meta name="application-name" content="Le Coeur">
 
-  <!-- Icône pour l’écran d’accueil iPhone -->
+  <!-- Icône iPhone -->
   <link rel="apple-touch-icon" href="icon.png">
-
-  <!-- Manifest PWA -->
-  <link rel="manifest" href="manifest.json">
-
-  <meta name="theme-color" content="#ffe6f0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <style>
     body {
@@ -30,6 +24,7 @@
       font-family: Georgia, serif;
       background: linear-gradient(135deg, #ffe6f0, #fff0b3);
       text-align: center;
+      padding: 20px;
     }
 
     #intro {
@@ -40,8 +35,8 @@
     }
 
     #coeur {
-      width: 120px;
-      height: 120px;
+      width: 110px;
+      height: 110px;
       background: red;
       transform: rotate(-45deg);
       margin: 20px;
@@ -54,84 +49,96 @@
     #coeur::after {
       content: "";
       position: absolute;
-      width: 120px;
-      height: 120px;
+      width: 110px;
+      height: 110px;
       background: red;
       border-radius: 50%;
     }
 
-    #coeur::before { top: -60px; left: 0; }
-    #coeur::after { left: 60px; top: 0; }
+    #coeur::before { top: -55px; left: 0; }
+    #coeur::after { left: 55px; top: 0; }
 
-    #poeme {
+    video {
       display: none;
-      font-size: 24px;
-      color: #4d0033;
-      max-width: 600px;
+      max-width: 90%;
+      border-radius: 15px;
       margin-bottom: 20px;
     }
 
     #logo {
       display: none;
-      width: 150px;
+      width: 140px;
+      margin-bottom: 20px;
+    }
+
+    #poeme {
+      display: none;
+      font-size: 22px;
+      color: #4d0033;
+      max-width: 600px;
       margin-bottom: 20px;
     }
 
     a {
-      margin-top: 15px;
+      display: none;
       text-decoration: none;
       color: white;
       background: #ff4d88;
       padding: 10px 22px;
       border-radius: 30px;
-      display: none;
-      margin-bottom: 10px;
+      margin: 8px 0;
     }
   </style>
 </head>
 <body>
 
-  <!-- Texte d’intro -->
-  <div id="intro">To the girl I love the most 🤍<br><small>Clique ici !</small></div>
+  <!-- INTRO -->
+  <div id="intro">
+    To the girl I love the most 🤍<br>
+    <small>Clique ici</small>
+  </div>
 
-  <!-- Cœur cliquable -->
+  <!-- CŒUR -->
   <div id="coeur"></div>
 
-  <video id="video" width="320" height="240" style="display:none; margin-bottom:20px;" controls>
-  <source src="video.mp4" type="video/mp4">
-  Votre navigateur ne supporte pas la vidéo.
-</video>
-  <video id="video" width="320" height="240" style="display:none; margin-bottom:20px;" autoplay muted loop>
+  <!-- VIDÉO -->
+  <video id="video" controls>
+    <source src="video.mp4" type="video/mp4">
+    Ton navigateur ne supporte pas la vidéo.
+  </video>
 
-  <!-- Logo -->
+  <!-- LOGO -->
   <img id="logo" src="logo.png" alt="Logo">
 
-  <!-- Poème -->
+  <!-- POÈME -->
   <p id="poeme">
-    Bon anniversaire la fille incroyable que tu es. Gros cœur avec les doigts
+    Bon anniversaire la fille incroyable que tu es.  
+    Gros cœur avec les doigts.
   </p>
 
-  <!-- Boutons -->
+  <!-- BOUTONS -->
   <a id="suite" href="coeur.html">Suite 👉</a>
   <a href="positivite.html">🌸 31 jours pour toi</a>
 
+  <!-- SCRIPT -->
   <script>
     const intro = document.getElementById("intro");
     const coeur = document.getElementById("coeur");
+    const video = document.getElementById("video");
     const logo = document.getElementById("logo");
     const poeme = document.getElementById("poeme");
     const suite = document.getElementById("suite");
     const positivite = document.querySelector('a[href="positivite.html"]');
 
-    // Clique sur le texte d’intro
     intro.onclick = () => {
       intro.style.display = "none";
       coeur.style.display = "block";
     };
 
-    // Clique sur le cœur
     coeur.onclick = () => {
       coeur.style.display = "none";
+      video.style.display = "block";
+      video.play();
       logo.style.display = "block";
       poeme.style.display = "block";
       suite.style.display = "inline-block";

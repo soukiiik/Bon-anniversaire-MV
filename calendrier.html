@@ -61,6 +61,19 @@ h1 {
   to { opacity: 1; transform: scale(1); }
 }
 
+/* Ligne explicative pour les prochains jours */
+#nextDays {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #b30059;
+  animation: pulseDots 1.5s infinite;
+}
+
+@keyframes pulseDots {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
 a {
   display: inline-block;
   margin-top: 25px;
@@ -80,21 +93,17 @@ a {
 
 <div class="grid" id="grid"></div>
 
-<!-- Trois petits points pour indiquer la suite -->
-<div style="margin-top:10px; font-size:24px; color:#b30059;">…</div>
+<div id="nextDays">D’autres jours arrivent bientôt…</div>
 
 <div id="citationBox"></div>
 
 <a href="index.html">⬅ Retour</a>
 
 <script>
-const startDate = new Date(new Date().getFullYear(), 11, 21); // 21 décembre
-const today = new Date();
-
 const grid = document.getElementById("grid");
 const box = document.getElementById("citationBox");
 
-/* 💬 Citations pour les 31 premiers jours */
+/* Citations pour 31 jours */
 const citations = [
   "Aujourd’hui, tu peux être fière de toi.",
   "Tu n’as rien à prouver pour mériter l’amour.",
@@ -139,10 +148,10 @@ for (let i = 0; i < joursMax; i++) {
   const key = "jour-" + i;
   const read = localStorage.getItem(key);
 
-  /* 🔒 Seul le premier jour est débloqué au départ */
-  let unlocked = (i === 0);  
+  // Seul le premier jour est débloqué au départ
+  let unlocked = (i === 0);
 
-  /* Si déjà lu, on affiche en rose */
+  // Si déjà lu, reste cliquable et rose
   if (read) {
     div.classList.add("read");
     unlocked = true;

@@ -3,117 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Le Cœur</title>
-<meta name="apple-mobile-web-app-title" content="Le Cœur">
-<meta name="application-name" content="Le Cœur">
 
 <style>
 body {
   margin: 0;
-  padding: 0;
+  font-family: Georgia, serif;
+  background: linear-gradient(135deg, #fff0f6, #fffbe6);
+  text-align: center;
+  padding: 30px;
+}
+
+h1 {
+  color: #b30059;
+  margin-bottom: 20px;
+}
+
+.grid {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
-  flex-direction: column;
-  text-align: center;
-  font-family: "Georgia", serif;
-  background: linear-gradient(135deg, #ffe6f0, #fff0b3);
-  overflow: hidden;
+  gap: 15px;
 }
 
-#intro {
-  font-size: 30px;
-  color: #b30059;
-  cursor: pointer;
-  margin-bottom: 16px;
-}
-
-#coeur {
-  width: 90px;
-  height: 90px;
-  background-color: red;
-  transform: rotate(-45deg);
-  margin: 16px;
-  display: none;
-  cursor: pointer;
-  position: relative;
-  animation: pulse 1.3s infinite;
-}
-
-#coeur::before,
-#coeur::after {
-  content: "";
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  background-color: red;
-  border-radius: 50%;
-}
-
-#coeur::before { top: -45px; left: 0; }
-#coeur::after { left: 45px; top: 0; }
-
-@keyframes pulse {
-  0%,100% { transform: rotate(-45deg) scale(1); }
-  50% { transform: rotate(-45deg) scale(1.08); }
-}
-
-video {
-  display: none;
-  width: 90%;
-  max-width: 360px;
-  max-height: 40vh;
+.day {
+  width: 70px;
+  height: 70px;
   border-radius: 15px;
-  margin-top: 12px;
+  background: #ffd6e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
 }
 
-a {
+.locked {
+  background: #eee;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+#citationBox {
+  margin-top: 25px;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  font-size: 20px;
+  color: #4d0033;
   display: none;
-  text-decoration: none;
-  color: white;
-  background: #ff4d88;
-  padding: 10px 22px;
-  border-radius: 30px;
-  margin-top: 12px;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+#tomorrow {
+  margin-top: 20px;
   font-size: 16px;
+  color: #b30059;
+  opacity: 0.8;
 }
 </style>
 </head>
 
 <body>
 
-<div id="intro">
-  C'est pour toi ma gooo 🤍<br>
-  <small>Clique</small>
+<h1>🤍 Un jour, une pensée 🤍</h1>
+
+<!-- JOURS -->
+<div class="grid">
+  <!-- Jour 1 -->
+  <div class="day" id="day1">1</div>
+
+  <!-- Jour 2 verrouillé -->
+  <div class="day locked">🔒</div>
 </div>
 
-<div id="coeur"></div>
+<!-- CITATION -->
+<div id="citationBox">
+  tu es la plus incroyable
+</div>
 
-<video id="video" controls playsinline>
-  <source src="video.mp4" type="video/mp4">
-  Ton navigateur ne supporte pas la vidéo.
-</video>
-
-<a id="positivite" href="calendrier.html">📅 Un cœur par jour</a>
+<!-- TEXTE BAS -->
+<div id="tomorrow">
+  demain une nouvelle citation
+</div>
 
 <script>
-const intro = document.getElementById("intro");
-const coeur = document.getElementById("coeur");
-const video = document.getElementById("video");
-const positivite = document.getElementById("positivite");
+const day1 = document.getElementById("day1");
+const box = document.getElementById("citationBox");
 
-intro.onclick = () => {
-  intro.style.display = "none";
-  coeur.style.display = "block";
-};
-
-coeur.onclick = () => {
-  coeur.style.display = "none";
-  video.style.display = "block";   // la vidéo s'affiche
-  // ATTENTION : plus de autoplay
-  positivite.style.display = "inline-block";
+day1.onclick = () => {
+  box.style.display = "block";
 };
 </script>
 

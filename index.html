@@ -7,125 +7,111 @@
 
 <style>
 html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+  margin:0;
+  padding:0;
+  height:100%;
   font-family: Georgia, serif;
-  text-align: center;
-  background: linear-gradient(135deg, #ffe6f0, #fff0b3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: linear-gradient(135deg,#ffe6f0,#fff0b3);
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-#container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+#container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
-/* Texte intro */
-#intro {
-  font-size: 30px;
-  color: #b30059;
-  cursor: pointer;
-  margin-bottom: 30px;
-}
-
-/* Wrapper du cœur */
-#coeurWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 30px 0;
-}
-
-/* Cœur */
-#coeur {
-  width: 90px;
-  height: 90px;
-  background-color: red;
-  transform: rotate(-45deg);
-  cursor: pointer;
-  position: relative;
-  animation: pulse 1.3s infinite;
-  overflow: visible;
-  display: none;
+/* coeur blanc */
+#coeur{
+  width:100px;
+  height:100px;
+  background:white;
+  transform:rotate(-45deg);
+  position:relative;
+  cursor:pointer;
+  animation:pulse 1.4s infinite;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
 #coeur::before,
-#coeur::after {
-  content: "";
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  background-color: red;
-  border-radius: 50%;
+#coeur::after{
+  content:"";
+  position:absolute;
+  width:100px;
+  height:100px;
+  background:white;
+  border-radius:50%;
 }
 
-#coeur::before {
-  top: -45px;
-  left: 0;
+#coeur::before{
+  top:-50px;
+  left:0;
 }
 
-#coeur::after {
-  left: 45px;
-  top: 0;
+#coeur::after{
+  left:50px;
+  top:0;
 }
 
-@keyframes pulse {
-  0%, 100% { transform: rotate(-45deg) scale(1); }
-  50% { transform: rotate(-45deg) scale(1.08); }
+/* animation coeur */
+@keyframes pulse{
+  0%{transform:rotate(-45deg) scale(1);}
+  50%{transform:rotate(-45deg) scale(1.08);}
+  100%{transform:rotate(-45deg) scale(1);}
 }
 
-/* Vidéo */
-video {
-  display: none;
-  width: 90%;
-  max-width: 360px;
-  max-height: 40vh;
-  border-radius: 15px;
-  margin-top: 20px;
+/* texte sous le coeur */
+#titre{
+  margin-top:25px;
+  font-size:28px;
+  color:#b30059;
+  letter-spacing:2px;
+}
+
+/* vidéo */
+video{
+  display:none;
+  width:90%;
+  max-width:360px;
+  max-height:40vh;
+  border-radius:15px;
+  margin-top:25px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 </style>
 </head>
 
 <body>
+
 <div id="container">
 
-  <!-- Texte d'intro -->
-  <div id="intro">
-    To the girl I love the most 🤍<br>
-    <small>Clique ici</small>
-  </div>
+<div id="coeur"></div>
 
-  <!-- Cœur -->
-  <div id="coeurWrapper">
-    <div id="coeur"></div>
-  </div>
+<div id="titre">le cœur</div>
 
-  <!-- Vidéo -->
-  <video id="video" controls playsinline>
-    <source src="video.mp4" type="video/mp4">
-    Ton navigateur ne supporte pas la vidéo.
-  </video>
+<video id="video" controls playsinline>
+<source src="video.mp4" type="video/mp4">
+Ton navigateur ne supporte pas la vidéo.
+</video>
 
 </div>
 
 <script>
-const intro = document.getElementById("intro");
-const coeur = document.getElementById("coeur");
-const video = document.getElementById("video");
 
-intro.addEventListener("click", () => {
-  intro.style.display = "none";
-  coeur.style.display = "block";
-});
+const coeur = document.getElementById("coeur")
+const video = document.getElementById("video")
+const titre = document.getElementById("titre")
 
 coeur.addEventListener("click", () => {
-  coeur.style.display = "none";
-  video.style.display = "block"; // pas d'autoplay
-});
+
+coeur.style.display="none"
+titre.style.display="none"
+video.style.display="block"
+
+})
+
 </script>
 
 </body>
